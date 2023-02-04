@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  creatdAt     DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  firstName    String
+  lastName     String
+  email        String   @unique
+  passwordHash String
+
+  reptiles  Reptile[]
+  schedules Schedule[]
+}
+
+model Reptile {
+  id        Int      @id @default(autoincrement())
+  creatdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  species   String
+  name      String
+  sex       String
+
+  user             User              @relation(fields: [userId], references: [id])
+  feedings         Feeding[]
+  husbandryRecords HusbandryRecord[]
+  schedules        Schedule[]
+}
+
+model Feeding {
+  id        Int      @id @default(autoincrement())
+  creatdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  foodItem  String
+  reptileId Int
+
+  reptile Reptile @relation(fields: [reptileId], references: [id])
+}
+
+model HusbandryRecord {
+  id          Int      @id @default(autoincrement())
+  creatdAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  length      Float
+  weight      Float
+  temperature Float
+  humidity    Float
+  reptileId   Int
+
+  reptile Reptile @relation(fields: [reptileId], references: [id])
+}
+
+model Schedule {
+  id          Int      @id @default(autoincrement())
+  creatdAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  reptileId   Int
+  type        String
+  description String
+  monday      Boolean
+  tuesday     Boolean
+  wednesday   Boolean
+  thrusday    Boolean
+  friday      Boolean
+  saturday    Boolean
+  sunday      Boolean
+
+  user    User    @relation(fields: [userId], references: [id])
+  reptile Reptile @relation(fields: [reptileId], references: [id])
+}
