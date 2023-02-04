@@ -1,5 +1,7 @@
 import crypto from "crypto";
+import { NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import { prisma } from "./db";
 
 export function encrypt(password: string) {
   return crypto
@@ -51,3 +53,43 @@ export function getTokenFromHeader(headerValue: string) {
   }
   return null;
 }
+
+const UNPROTECED_PATHS = ["/users", "/users/login"];
+
+export const authenticateUserFromToken: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  console.log("Auth");
+  if (UNPROTECED_PATHS.includes(req.path)) {
+    next();
+    return;
+  }
+
+  const token = getTokenFromHeader(req.headers.authorization || "");
+
+  if (!token) {
+    res.status(401).json({ message: "not authenticated" });
+    return;
+  }
+
+  let payload;
+  try {
+    payload = await verifyToken<{ userId: number }>(token);
+  } catch {
+    res.status(401).json({ message: "invalid token. may have expired" });
+    return;
+  }
+
+  const user = await prisma.user.findFirst({ where: { id: payload.userId } });
+  if (!user) {
+    res.status(401).json({
+      message: "The user associated with this token no longer exists",
+    });
+    return;
+  } else {
+    res.locals.user = user;
+    next();
+  }
+};
