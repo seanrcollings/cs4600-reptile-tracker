@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import users from "./routes/users";
 import reptiles from "./routes/reptiles";
 import { authenticateUserFromToken } from "./security";
+import { clientErrorHandler, errorHandler, logErrors } from "./errors";
 
 dotenv.config();
 
@@ -14,5 +15,9 @@ app.use(authenticateUserFromToken);
 
 app.use("/users", users);
 app.use("/reptiles", reptiles);
+
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
 
 app.listen(3000);

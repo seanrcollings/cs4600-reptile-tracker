@@ -61,7 +61,6 @@ export const authenticateUserFromToken: RequestHandler = async (
   res,
   next
 ) => {
-  console.log("Auth");
   if (UNPROTECED_PATHS.includes(req.path)) {
     next();
     return;
