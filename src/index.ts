@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 import users from "./routes/users";
 import reptiles from "./routes/reptiles";
+import feedings from "./routes/feedings";
 import { authenticateUserFromToken } from "./security";
 import { clientErrorHandler, errorHandler, logErrors } from "./errors";
 

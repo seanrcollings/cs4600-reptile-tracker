@@ -19,3 +19,7 @@ export interface ReptileCreation {
 }
 
 export type ReptileUpdate = Partial<ReptileCreation>;
+
+export interface FeedingCreation {
+  foodItem: string;
+}

@@ -1,16 +1,14 @@
-import crypto from "crypto";
-import { NextFunction, RequestHandler } from "express";
+import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import { prisma } from "./db";
 
-export function encrypt(password: string) {
-  return crypto
-    .pbkdf2Sync(password, process.env.SALT as string, 100000, 64, "sha512")
-    .toString();
+export async function encrypt(password: string) {
+  return bcrypt.hash(password, 10);
 }
 
-export function isValid(encrypted: string, plain: string) {
-  return encrypted === encrypt(plain);
+export async function isValid(encrypted: string, plain: string) {
+  return bcrypt.compare(plain, encrypted);
 }
 
 export async function createToken<T extends object | string | Buffer>(
@@ -69,7 +67,7 @@ export const authenticateUserFromToken: RequestHandler = async (
   const token = getTokenFromHeader(req.headers.authorization || "");
 
   if (!token) {
-    res.status(401).json({ message: "not authenticated" });
+    res.status(401).json({ error: "not authenticated" });
     return;
   }
 
@@ -77,15 +75,13 @@ export const authenticateUserFromToken: RequestHandler = async (
   try {
     payload = await verifyToken<{ userId: number }>(token);
   } catch {
-    res.status(401).json({ message: "invalid token. may have expired" });
+    res.status(401).json({ error: "not authenticated" });
     return;
   }
 
   const user = await prisma.user.findFirst({ where: { id: payload.userId } });
   if (!user) {
-    res.status(401).json({
-      message: "The user associated with this token no longer exists",
-    });
+    res.status(401).json({ error: "not authenticated" });
     return;
   } else {
     res.locals.user = user;

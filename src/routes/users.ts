@@ -2,19 +2,26 @@ import { Router } from "express";
 import { CreateUserRequest, LoginRequest } from "../types";
 import { prisma } from "../db";
 import * as security from "../security";
+import { body, Schemas } from "../validate";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post("/", body(Schemas.createUser), async (req, res) => {
   const { firstName, lastName, email, password } =
     req.body as CreateUserRequest;
+
+  const preexistingUser = await prisma.user.findFirst({ where: { email } });
+
+  if (preexistingUser) {
+    res.status(400).json({ error: "email in use" });
+  }
 
   const user = await prisma.user.create({
     data: {
       firstName,
       lastName,
       email,
-      passwordHash: security.encrypt(password),
+      passwordHash: await security.encrypt(password),
     },
   });
 
@@ -23,15 +30,15 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", body(Schemas.loginUser), async (req, res) => {
   const { email, password } = req.body as LoginRequest;
   const user = await prisma.user.findFirst({ where: { email } });
 
-  if (user && security.isValid(user.passwordHash, password)) {
+  if (user && (await security.isValid(user.passwordHash, password))) {
     const token = await security.createToken({ userId: user.id });
     res.json({ token });
   } else {
-    res.status(400).json({ message: "invalid username or password?" });
+    res.status(400).json({ error: "invalid username or password?" });
   }
 });
 
