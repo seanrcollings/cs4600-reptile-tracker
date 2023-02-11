@@ -69,13 +69,13 @@ model Schedule {
   reptileId   Int
   type        String
   description String
-  monday      Boolean
-  tuesday     Boolean
-  wednesday   Boolean
-  thrusday    Boolean
-  friday      Boolean
-  saturday    Boolean
-  sunday      Boolean
+  monday      Boolean  @default(false)
+  tuesday     Boolean  @default(false)
+  wednesday   Boolean  @default(false)
+  thrusday    Boolean  @default(false)
+  friday      Boolean  @default(false)
+  saturday    Boolean  @default(false)
+  sunday      Boolean  @default(false)
 
   user    User    @relation(fields: [userId], references: [id])
   reptile Reptile @relation(fields: [reptileId], references: [id])

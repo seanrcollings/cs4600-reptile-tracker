@@ -3,16 +3,26 @@ import dotenv from "dotenv";
 
 import users from "./routes/users";
 import reptiles from "./routes/reptiles";
-import feedings from "./routes/feedings";
-import { authenticateUserFromToken } from "./security";
+import { tokenAuthenticate } from "./security";
 import { clientErrorHandler, errorHandler, logErrors } from "./errors";
+import cookieParser from "cookie-parser";
+import { UserJwtPayload } from "./types";
 
 dotenv.config();
+
+declare global {
+  namespace Express {
+    export interface Locals {
+      user: UserJwtPayload;
+    }
+  }
+}
 
 const app = express();
 
 app.use(express.json());
-app.use(authenticateUserFromToken);
+app.use(cookieParser());
+app.use(tokenAuthenticate);
 
 app.use("/users", users);
 app.use("/reptiles", reptiles);

@@ -1,7 +1,9 @@
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { prisma } from "./db";
+import { User } from "@prisma/client";
+import { UserJwtPayload } from "./types";
 
 export async function encrypt(password: string) {
   return bcrypt.hash(password, 10);
@@ -30,7 +32,7 @@ export async function createToken<T extends object | string | Buffer>(
   });
 }
 
-export async function verifyToken<T>(token: string): Promise<T> {
+export async function decodeToken<T>(token: string): Promise<T> {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.SECRET as string, (err, res) => {
       if (err) {
@@ -42,49 +44,48 @@ export async function verifyToken<T>(token: string): Promise<T> {
   });
 }
 
-export function getTokenFromHeader(headerValue: string) {
-  const regex = /Bearer (.+)/;
-
-  const match = headerValue.match(regex);
-  if (match) {
-    return match[1];
-  }
-  return null;
-}
-
 const UNPROTECED_PATHS = ["/users", "/users/login"];
 
-export const authenticateUserFromToken: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export async function verifyToken(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  callback: () => string | null
+) {
   if (UNPROTECED_PATHS.includes(req.path)) {
     next();
     return;
   }
 
-  const token = getTokenFromHeader(req.headers.authorization || "");
+  const token = callback();
 
   if (!token) {
     res.status(401).json({ error: "not authenticated" });
     return;
   }
 
-  let payload;
+  let payload: UserJwtPayload;
   try {
-    payload = await verifyToken<{ userId: number }>(token);
+    payload = await decodeToken<UserJwtPayload>(token);
   } catch {
     res.status(401).json({ error: "not authenticated" });
     return;
   }
 
-  const user = await prisma.user.findFirst({ where: { id: payload.userId } });
-  if (!user) {
-    res.status(401).json({ error: "not authenticated" });
-    return;
-  } else {
-    res.locals.user = user;
-    next();
-  }
+  res.locals.user = payload;
+  next();
+}
+
+export const tokenAuthenticate: RequestHandler = async (req, res, next) => {
+  verifyToken(req, res, next, () => {
+    if (!req.headers.authorization) return null;
+
+    const regex = /Bearer (.+)/;
+
+    const match = req.headers.authorization.match(regex);
+    if (match) {
+      return match[1];
+    }
+    return null;
+  });
 };

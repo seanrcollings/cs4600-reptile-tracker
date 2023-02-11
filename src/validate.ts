@@ -7,7 +7,6 @@ function requestValidator(key: keyof Request, schema: Object): RequestHandler {
   const validator = ajv.compile(schema);
 
   return (req, res, next) => {
-    console.log(req[key]);
     if (!validator(req[key])) {
       res.status(400).json({ error: validator.errors });
     } else {
@@ -44,6 +43,7 @@ export const Schemas = {
       password: { type: "string" },
     },
     required: ["firstName", "lastName", "email", "password"],
+    additionalProperties: false,
   },
   loginUser: {
     type: "object",
@@ -59,6 +59,7 @@ export const Schemas = {
       id: { type: "string", pattern: "^\\d+$" },
     },
     required: ["id"],
+    additionalProperties: false,
   },
   createReptile: {
     type: "object",
@@ -74,6 +75,7 @@ export const Schemas = {
       },
     },
     required: ["species", "name", "sex"],
+    additionalProperties: false,
   },
   updateReptile: {
     type: "object",
@@ -88,6 +90,7 @@ export const Schemas = {
         enum: ["m", "f"],
       },
     },
+    additionalProperties: false,
   },
   feeding: {
     type: "object",
@@ -95,5 +98,33 @@ export const Schemas = {
       foodItem: { type: "string" },
     },
     required: ["foodItem"],
+    additionalProperties: false,
+  },
+  createHusbandryRecord: {
+    type: "object",
+    properties: {
+      length: { type: "number" },
+      weight: { type: "number" },
+      temperature: { type: "number" },
+      humidity: { type: "number" },
+    },
+    required: ["length", "weight", "temperature", "humidity"],
+    additionalProperties: false,
+  },
+  createSchedule: {
+    type: "object",
+    properties: {
+      type: { type: "string", enum: ["feed", "record", "clean"] },
+      description: { type: "string" },
+      monday: { type: "boolean" },
+      tuesday: { type: "boolean" },
+      wednesday: { type: "boolean" },
+      thursday: { type: "boolean" },
+      friday: { type: "boolean" },
+      saturday: { type: "boolean" },
+      sunday: { type: "boolean" },
+    },
+    required: ["type", "description"],
+    additionalProperties: false,
   },
 };

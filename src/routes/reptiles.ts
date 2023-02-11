@@ -3,13 +3,17 @@ import { prisma } from "../db";
 import { ReptileCreation, ReptileUpdate } from "../types";
 import { body, params, Schemas } from "../validate";
 import feedings from "./feedings";
+import husbandryRecords from "./husbandryRecords";
+import schedules from "./schedules";
 
 const router = Router();
 router.use(feedings);
+router.use(husbandryRecords);
+router.use(schedules);
 
 router.get("", async (req, res) => {
   const reptiles = await prisma.reptile.findMany({
-    where: { user: res.locals.user },
+    where: { userId: res.locals.user.id },
   });
   res.json({ reptiles });
 });
@@ -39,7 +43,7 @@ router.put(
     const initialReptile = await prisma.reptile.findFirst({
       where: {
         id,
-        user: res.locals.user,
+        userId: res.locals.user.id,
       },
     });
 
@@ -69,7 +73,7 @@ router.delete("/:id", params(Schemas.idParam), async (req, res) => {
   const initialReptile = await prisma.reptile.findFirst({
     where: {
       id,
-      user: res.locals.user,
+      userId: res.locals.user.id,
     },
   });
 

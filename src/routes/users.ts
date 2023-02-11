@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreateUserRequest, LoginRequest } from "../types";
+import { CreateUserRequest, LoginRequest, UserJwtPayload } from "../types";
 import { prisma } from "../db";
 import * as security from "../security";
 import { body, Schemas } from "../validate";
@@ -35,7 +35,12 @@ router.post("/login", body(Schemas.loginUser), async (req, res) => {
   const user = await prisma.user.findFirst({ where: { email } });
 
   if (user && (await security.isValid(user.passwordHash, password))) {
-    const token = await security.createToken({ userId: user.id });
+    const token = await security.createToken<UserJwtPayload>({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
     res.json({ token });
   } else {
     res.status(400).json({ error: "invalid username or password?" });

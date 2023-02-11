@@ -9,7 +9,7 @@ router.get("/:id/feedings", params(Schemas.idParam), async (req, res) => {
   const reptileId = parseInt(req.params.id);
 
   const feedings = await prisma.feeding.findMany({
-    where: { reptileId: reptileId, reptile: { user: res.locals.user } },
+    where: { reptileId: reptileId, reptile: { userId: res.locals.user.id } },
   });
 
   res.json({ feedings });
@@ -21,10 +21,9 @@ router.post(
   body(Schemas.feeding),
   async (req, res) => {
     const reptileId = parseInt(req.params.id);
-    const { foodItem } = req.body as FeedingCreation;
 
     const reptile = await prisma.reptile.findFirst({
-      where: { id: reptileId, user: res.locals.user },
+      where: { id: reptileId, userId: res.locals.user.id },
     });
 
     if (!reptile) {
@@ -35,7 +34,7 @@ router.post(
     const feeding = await prisma.feeding.create({
       data: {
         reptileId: reptile?.id,
-        foodItem,
+        ...req.body,
       },
     });
 
@@ -50,10 +49,13 @@ router.put(
   async (req, res) => {
     const reptileId = parseInt(req.params.id);
     const feedingId = parseInt(req.params.feedingId);
-    const { foodItem } = req.body as FeedingCreation;
 
     let feeding = await prisma.feeding.findFirst({
-      where: { id: feedingId, reptileId, reptile: { user: res.locals.user } },
+      where: {
+        id: feedingId,
+        reptileId,
+        reptile: { userId: res.locals.user.id },
+      },
     });
 
     if (!feeding) {
@@ -63,7 +65,7 @@ router.put(
 
     feeding = await prisma.feeding.update({
       where: { id: feedingId },
-      data: { foodItem },
+      data: req.body,
     });
 
     res.json({ feeding });
@@ -82,7 +84,7 @@ router.delete(
       where: {
         id: feedingId,
         reptileId,
-        reptile: { user: res.locals.user },
+        reptile: { userId: res.locals.user.id },
       },
     });
 
@@ -91,7 +93,7 @@ router.delete(
       return;
     }
 
-    await prisma.reptile.delete({
+    await prisma.feeding.delete({
       where: { id: feedingId },
     });
 
