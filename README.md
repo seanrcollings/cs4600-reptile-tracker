@@ -1,29 +1,24 @@
-# USU 4610 Simple Server
+# Reptile Tracker
 This project serves as a starting point for full-stack applications.
 
 ## Get Started
-### Clone the repo
-```bash
-git clone git@github.com:dittonjs/usu-4610-simple-server.git
-```
-Once cloned you can delete the `.git` folder and reinitialize with your own repo
-
-```bash
-rm -rf .git
-git init
-```
-The create your remote repository and commit and push to it.
-
 ### Install the dependencies
 
-With yarn
 ```bash
 yarn
 ```
 
-With npm
+### Setup
+
+Copy the example env file
 ```bash
-npm install
+cp .env.example .env
+```
+The example should be sufficient for testing the endpoints.
+
+Create DB
+```bash
+yarn db:setup
 ```
 
 ## Development
@@ -34,11 +29,6 @@ With yarn
 yarn dev
 ```
 
-With npm
-```bash
-npm run dev
-```
-
 ## Production
 Build the project by running
 
@@ -47,7 +37,3 @@ With yarn
 yarn build
 ```
 
-With npm
-```bash
-npm run build
-```

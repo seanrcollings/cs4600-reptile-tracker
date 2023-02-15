@@ -1,4 +1,5 @@
-import { Request } from "express";
+import { PrismaClient } from "@prisma/client";
+import { Request, RequestHandler } from "express";
 
 export interface CreateUserRequest {
   firstName: string;
@@ -49,3 +50,11 @@ export interface ScheduleCreation {
   saturday?: boolean;
   sunday?: boolean;
 }
+
+export interface ControllerDependancies {
+  client: PrismaClient;
+}
+
+export type Endpoint = (
+  deps: ControllerDependancies
+) => RequestHandler | RequestHandler[];

@@ -1,14 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
-
-import users from "./routes/users";
-import reptiles from "./routes/reptiles";
-import { tokenAuthenticate } from "./security";
-import { clientErrorHandler, errorHandler, logErrors } from "./errors";
 import cookieParser from "cookie-parser";
+import { PrismaClient } from "@prisma/client";
+
+import { clientErrorHandler, errorHandler, logErrors } from "./errors";
 import { UserJwtPayload } from "./types";
 
-dotenv.config();
+import {
+  usersController,
+  feedingsController,
+  husbandryRecordsController,
+  reptilesController,
+  schedulesController,
+} from "./controllers";
 
 declare global {
   namespace Express {
@@ -18,14 +22,19 @@ declare global {
   }
 }
 
+dotenv.config();
+
 const app = express();
+const client = new PrismaClient();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(tokenAuthenticate);
 
-app.use("/users", users);
-app.use("/reptiles", reptiles);
+usersController(app, { client });
+reptilesController(app, { client });
+feedingsController(app, { client });
+schedulesController(app, { client });
+husbandryRecordsController(app, { client });
 
 app.use(logErrors);
 app.use(clientErrorHandler);
