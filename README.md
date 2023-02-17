@@ -1,5 +1,4 @@
 # Reptile Tracker
-This project serves as a starting point for full-stack applications.
 
 ## Get Started
 ### Install the dependencies
@@ -37,3 +36,9 @@ With yarn
 yarn build
 ```
 
+# Testing
+The included Postman collection should 
+describe all the implemented endpoints.
+
+Once you create a token for your user, it should automatically 
+set it as the auth header for all subsequent requests.

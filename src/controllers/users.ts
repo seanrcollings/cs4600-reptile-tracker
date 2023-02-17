@@ -55,6 +55,16 @@ const createUser: Endpoint = ({ client }) => [
   },
 ];
 
+const listUserSchedules: Endpoint =
+  ({ client }) =>
+  async (req, res) => {
+    const schedules = await client.schedule.findMany({
+      where: { userId: res.locals.user.id },
+    });
+
+    res.json({ schedules });
+  };
+
 export const usersController = controller("users", [
   {
     path: "",
@@ -67,5 +77,11 @@ export const usersController = controller("users", [
     method: "post",
     endpoint: login,
     skipAuth: true,
+  },
+  {
+    path: "/schedules",
+    method: "get",
+    endpoint: listUserSchedules,
+    skipAuth: false,
   },
 ]);
