@@ -7,6 +7,7 @@
     "build": "cd src && tsc",
     "dev": "nodemon src/index.ts",
     "prod": "node dist/index.js",
+    "migrate": "prisma db push",
     "db:setup": "prisma db push",
     "db:drop": "rm prisma/dev.db",
     "db:migrate": "prisma migrate dev"

@@ -17,7 +17,7 @@ The example should be sufficient for testing the endpoints.
 
 Create DB
 ```bash
-yarn db:setup
+yarn migrate
 ```
 
 ## Development
@@ -37,8 +37,8 @@ yarn build
 ```
 
 # Testing
-The included Postman collection should 
+The included Postman collection should
 describe all the implemented endpoints.
 
-Once you create a token for your user, it should automatically 
+Once you create a token for your user, it should automatically
 set it as the auth header for all subsequent requests.
