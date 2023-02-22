@@ -1,4 +1,3 @@
-import { Router } from "express";
 import { controller } from "../lib/controller";
 import { body, params, Schemas } from "../lib/validate";
 import { Endpoint } from "../types";

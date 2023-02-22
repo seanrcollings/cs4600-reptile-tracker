@@ -18,7 +18,7 @@ CREATE TABLE "Reptile" (
     "species" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "sex" TEXT NOT NULL,
-    CONSTRAINT "Reptile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Reptile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -28,7 +28,7 @@ CREATE TABLE "Feeding" (
     "updatedAt" DATETIME NOT NULL,
     "foodItem" TEXT NOT NULL,
     "reptileId" INTEGER NOT NULL,
-    CONSTRAINT "Feeding_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Feeding_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -41,7 +41,7 @@ CREATE TABLE "HusbandryRecord" (
     "temperature" REAL NOT NULL,
     "humidity" REAL NOT NULL,
     "reptileId" INTEGER NOT NULL,
-    CONSTRAINT "HusbandryRecord_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "HusbandryRecord_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -60,8 +60,8 @@ CREATE TABLE "Schedule" (
     "friday" BOOLEAN NOT NULL DEFAULT false,
     "saturday" BOOLEAN NOT NULL DEFAULT false,
     "sunday" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "Schedule_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Schedule_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Schedule_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Schedule_reptileId_fkey" FOREIGN KEY ("reptileId") REFERENCES "Reptile" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
