@@ -28,6 +28,14 @@ const login: Endpoint = ({ client }) => [
   },
 ];
 
+const me: Endpoint =
+  ({ client }) =>
+  async (req, res) => {
+    const user = client.user.findFirst({ where: { id: res.locals.user.id } });
+
+    res.json({ user: { ...user, passwordHash: undefined } });
+  };
+
 const createUser: Endpoint = ({ client }) => [
   body(Schemas.createUser),
   async (req, res) => {
@@ -79,9 +87,13 @@ export const usersController = controller("users", [
     skipAuth: true,
   },
   {
+    path: "/me",
+    method: "get",
+    endpoint: me,
+  },
+  {
     path: "/schedules",
     method: "get",
     endpoint: listUserSchedules,
-    skipAuth: false,
   },
 ]);

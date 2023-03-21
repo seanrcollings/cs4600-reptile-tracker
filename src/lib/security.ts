@@ -17,7 +17,7 @@ export async function createToken<T extends object | string | Buffer>(
     jwt.sign(
       payload,
       process.env.SECRET as string,
-      { expiresIn: "1h" },
+      { expiresIn: "7d" },
       (err, token) => {
         if (err) {
           reject(err);

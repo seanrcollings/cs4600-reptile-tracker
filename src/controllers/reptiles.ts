@@ -83,7 +83,7 @@ const deleteReptile: Endpoint = ({ client }) => [
       where: { id },
     });
 
-    res.send();
+    res.status(200).json({ success: true });
   },
 ];
 
