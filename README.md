@@ -7,6 +7,9 @@
 yarn
 ```
 
+```bash
+cd client && yarn
+```
 ### Setup
 
 Copy the example env file
@@ -21,11 +24,17 @@ yarn migrate
 ```
 
 ## Development
-Start the server by running:
+Start the backend server by running:
 
 With yarn
 ```bash
 yarn dev
+```
+
+Start the frontend server by running
+
+```bash
+cd client && yarn dev
 ```
 
 ## Production
