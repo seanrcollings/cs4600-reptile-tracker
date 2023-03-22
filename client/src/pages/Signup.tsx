@@ -26,7 +26,7 @@ export default function Signup() {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper width={500}>
       <h1>Sign Up</h1>
       <Form onSubmit={onSubmit}>
         <TextInput

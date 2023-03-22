@@ -31,7 +31,7 @@ export default function Login() {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper width={500}>
       <h1>Login</h1>
       {error && <ErrorBanner>{error.toString()}</ErrorBanner>}
       <Form onSubmit={onSubmit}>

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const PageWrapper = styled.div`
+export const PageWrapper = styled.div<{ width?: number }>`
   margin: auto;
-  width: 1000px;
+  width: ${({ width = 1000 }) => `${width}px`};
 `;
 
 export const Header = styled.div`
