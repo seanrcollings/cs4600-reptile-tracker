@@ -8,6 +8,14 @@ import * as security from "../lib/security";
 import { body, Schemas } from "../lib/validate";
 import { controller } from "../lib/controller";
 
+function error(...messages: string[]) {
+  return {
+    errors: messages.map((m) => ({
+      message: m,
+    })),
+  };
+}
+
 const login: Endpoint = ({ client }) => [
   body(Schemas.loginUser),
   async (req, res) => {
@@ -23,7 +31,7 @@ const login: Endpoint = ({ client }) => [
       });
       res.json({ token });
     } else {
-      res.status(400).json({ error: "invalid username or password?" });
+      res.status(400).json(error("invalid username or password?"));
     }
   },
 ];
@@ -45,7 +53,7 @@ const createUser: Endpoint = ({ client }) => [
     const preexistingUser = await client.user.findFirst({ where: { email } });
 
     if (preexistingUser) {
-      res.status(400).json({ error: "email in use" });
+      res.status(400).json({ errors: "email in use" });
     }
 
     const user = await client.user.create({

@@ -1,6 +1,7 @@
 import { Option, Select, TextInput } from "atomic-elements";
 import styled from "styled-components";
 import { ReptileCreation } from "../../../../src/types";
+import { ApiError } from "../../lib/api";
 
 const Form = styled.form`
   & .aje-input {
@@ -11,9 +12,10 @@ const Form = styled.form`
 type Props = {
   value: ReptileCreation;
   onChange: (value: ReptileCreation) => void;
+  error: ApiError | null;
 };
 
-export default function ReptileForm({ value, onChange }: Props) {
+export default function ReptileForm({ value, onChange, error }: Props) {
   return (
     <Form>
       <TextInput
@@ -21,12 +23,16 @@ export default function ReptileForm({ value, onChange }: Props) {
         value={value.name}
         onChange={(v) => onChange({ ...value, name: v })}
         size="medium"
+        error={error?.get("/name")}
+        required
       />
 
       <Select
         label="Sex"
         value={value.sex}
         onChange={(v) => onChange({ ...value, sex: v })}
+        error={error?.get("/sex")}
+        required
       >
         <Option value="m">Male</Option>
         <Option value="f">Female</Option>
@@ -36,6 +42,8 @@ export default function ReptileForm({ value, onChange }: Props) {
         label="Species"
         value={value.species}
         onChange={(v) => onChange({ ...value, species: v })}
+        error={error?.get("/species")}
+        required
       >
         <Option value="ball_python">Ball Python</Option>
         <Option value="king_snake">King Snake</Option>

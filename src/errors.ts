@@ -12,7 +12,7 @@ export const clientErrorHandler: ErrorRequestHandler = (
   next
 ) => {
   if (req.xhr) {
-    res.status(500).send({ error: "Something failed!" });
+    res.status(500).send({ errors: "Something failed!" });
   } else {
     next(err);
   }
@@ -20,5 +20,5 @@ export const clientErrorHandler: ErrorRequestHandler = (
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   res.status(500);
-  res.render("error", { error: err });
+  res.render("error", { errors: err });
 };

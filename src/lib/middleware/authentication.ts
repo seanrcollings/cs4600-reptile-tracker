@@ -18,7 +18,7 @@ export async function verifyToken(
   const token = callback();
 
   if (!token) {
-    res.status(401).json({ error: "not authenticated" });
+    res.status(401).json({ errors: "not authenticated" });
     return;
   }
 
@@ -26,7 +26,7 @@ export async function verifyToken(
   try {
     payload = await decodeToken<UserJwtPayload>(token);
   } catch {
-    res.status(401).json({ error: "not authenticated" });
+    res.status(401).json({ errors: "not authenticated" });
     return;
   }
 

@@ -1,5 +1,5 @@
 import { Reptile } from "@prisma/client";
-import { ErrorBanner, Modal } from "atomic-elements";
+import { Modal } from "atomic-elements";
 import { useState } from "react";
 import { ReptileCreation } from "../../../../src/types";
 import { useCreate } from "../../lib/api";
@@ -39,8 +39,7 @@ export default function CreateReptileModal({ open, onClose }: Props) {
       primaryButton="Save"
       primaryAction={onSubmit}
     >
-      {error && <ErrorBanner>{error}</ErrorBanner>}
-      <ReptileForm value={reptile} onChange={setReptile} />
+      <ReptileForm value={reptile} onChange={setReptile} error={error} />
     </Modal>
   );
 }

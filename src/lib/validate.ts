@@ -1,14 +1,14 @@
 import { Request, RequestHandler } from "express";
 import Ajv from "ajv";
 
-const ajv = new Ajv();
+const ajv = new Ajv({ allErrors: true });
 
 function requestValidator(key: keyof Request, schema: Object): RequestHandler {
   const validator = ajv.compile(schema);
 
   return (req, res, next) => {
     if (!validator(req[key])) {
-      res.status(400).json({ error: validator.errors });
+      res.status(400).json({ errors: validator.errors });
     } else {
       next();
     }
@@ -37,10 +37,10 @@ export const Schemas = {
   createUser: {
     type: "object",
     properties: {
-      firstName: { type: "string" },
-      lastName: { type: "string" },
-      email: { type: "string" },
-      password: { type: "string" },
+      firstName: { type: "string", minLength: 1 },
+      lastName: { type: "string", minLength: 1 },
+      email: { type: "string", minLength: 1 },
+      password: { type: "string", minLength: 1 },
     },
     required: ["firstName", "lastName", "email", "password"],
     additionalProperties: false,
@@ -68,7 +68,7 @@ export const Schemas = {
         type: "string",
         enum: ["ball_python", "king_snake", "corn_snake", "redtail_boa"],
       },
-      name: { type: "string" },
+      name: { type: "string", minLength: 1 },
       sex: {
         type: "string",
         enum: ["m", "f"],
@@ -84,7 +84,7 @@ export const Schemas = {
         type: "string",
         enum: ["ball_python", "king_snake", "corn_snake", "redtail_boa"],
       },
-      name: { type: "string" },
+      name: { type: "string", minLength: 1 },
       sex: {
         type: "string",
         enum: ["m", "f"],

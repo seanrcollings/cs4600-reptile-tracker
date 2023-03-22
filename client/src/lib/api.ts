@@ -1,11 +1,28 @@
 import { useEffect, useState } from "react";
 
-export class ApiError extends Error {
-  data: { error: string };
+type ErrorValue = {
+  instancePath?: string;
+  message: string;
+};
 
-  constructor(message: string, data: { error: string }) {
+interface ErrorData {
+  errors: ErrorValue[];
+}
+
+export class ApiError extends Error {
+  data: ErrorData;
+
+  constructor(message: string, data: ErrorData) {
     super(message);
     this.data = data;
+  }
+
+  get(path: string) {
+    return this.data.errors.find((e) => e.instancePath == path)?.message;
+  }
+
+  toString() {
+    return this.data.errors.reduce((c, e) => c + ` ${e.message}`, "");
   }
 }
 
@@ -48,7 +65,6 @@ export class ReptileApi {
       if (res.status == 401) {
         localStorage.removeItem("token");
       }
-
       throw new ApiError(`${method} ${path}: ${res.status}`, await res.json());
     }
 
@@ -83,18 +99,10 @@ export class ReptileApi {
   }
 }
 
-function stringifyError(error: Error): string {
-  if (error instanceof ApiError) {
-    return error.data["error"];
-  }
-
-  return error.message;
-}
-
 type QueryStatus<T> =
   | { loading: true; data: null; error: null }
   | { loading: false; data: T; error: null }
-  | { loading: false; data: null; error: string };
+  | { loading: false; data: null; error: ApiError };
 
 type QueryReturn<T> = QueryStatus<T> & { refetch: () => void };
 
@@ -104,16 +112,13 @@ export function useQuery<T>(
 ): QueryReturn<T> {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const makeRequest = () => {
     setLoading(true);
     ReptileApi.get<T>(path, params)
       .then((value) => setData(value))
-      .catch((err) => {
-        console.error(error);
-        setError(stringifyError(err));
-      })
+      .catch((err) => setError(err))
       .finally(() => setLoading(false));
   };
 
@@ -128,7 +133,7 @@ type MutationReturn<B, T> = [MutationFunction<B, T>, QueryStatus<T>];
 export function useCreate<B, T>(path: string): MutationReturn<B, T> {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const mutate = async (body: B) => {
     setLoading(true);
@@ -140,7 +145,7 @@ export function useCreate<B, T>(path: string): MutationReturn<B, T> {
           resolve(value);
         })
         .catch((err) => {
-          setError(stringifyError(err));
+          setError(err);
         })
         .finally(() => setLoading(false));
     });
@@ -152,7 +157,7 @@ export function useCreate<B, T>(path: string): MutationReturn<B, T> {
 export function useUpdate<B, T>(path: string): MutationReturn<B, T> {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const mutate = async (body: B) => {
     setLoading(true);
@@ -163,7 +168,7 @@ export function useUpdate<B, T>(path: string): MutationReturn<B, T> {
           setError(null);
           resolve(value);
         })
-        .catch((err) => setError(stringifyError(err)))
+        .catch((err) => setError(err))
         .finally(() => setLoading(false));
     });
   };
@@ -176,7 +181,7 @@ type DeleteReturn<T> = [() => Promise<T>, QueryStatus<T>];
 export function useDelete<T>(path: string): DeleteReturn<T> {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const mutate = async () => {
     setLoading(true);
@@ -188,7 +193,7 @@ export function useDelete<T>(path: string): DeleteReturn<T> {
           resolve(value);
         })
         .catch((err) => {
-          setError(stringifyError(err));
+          setError(err);
         })
         .finally(() => setLoading(false));
     });

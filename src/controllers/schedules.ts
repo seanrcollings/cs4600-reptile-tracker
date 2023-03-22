@@ -25,7 +25,7 @@ const createSchedule: Endpoint = ({ client }) => [
     });
 
     if (!reptile) {
-      res.send(404).json({ error: "not found" });
+      res.send(404).json({ errors: "not found" });
       return;
     }
 

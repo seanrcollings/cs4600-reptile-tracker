@@ -4,6 +4,7 @@ import { Button, ErrorBanner, TextInput } from "atomic-elements";
 
 import { LoginRequest } from "../../../src/types";
 import { useCreate, ReptileApi } from "../lib/api";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,33 +21,28 @@ export default function Login() {
     e.preventDefault();
     login({ email, password }).then(({ token }) => {
       ReptileApi.token = token;
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     });
   };
 
   return (
     <div>
-      {error && <ErrorBanner>{error}</ErrorBanner>}
+      {error && <ErrorBanner>{error.toString()}</ErrorBanner>}
       <form onSubmit={onSubmit}>
-        <TextInput
-          type="text"
-          label="Email"
-          name="email"
-          value={email}
-          onChange={setEmail}
-        />
+        <TextInput label="Email" value={email} onChange={setEmail} required />
         <TextInput
           /* @ts-ignore */
           type="password"
           label="Password"
-          name="password"
           value={password}
           onChange={setPassword}
+          required
         />
         <Button type="submit" loading={loading}>
           Login
         </Button>
       </form>
+      <Link to="/signup">Sign Up</Link>
     </div>
   );
 }

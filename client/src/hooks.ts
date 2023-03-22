@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useActionData } from "react-router";
 
 interface Error<T> {
-  error: T | null;
+  errors: T | null;
 }
 
 export function useErrorData<T = string>(): T | null {

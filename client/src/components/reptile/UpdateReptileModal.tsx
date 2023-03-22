@@ -35,8 +35,7 @@ export default function UpdateReptileModal({ reptile, open, onClose }: Props) {
       primaryButton="Save"
       primaryAction={onSubmit}
     >
-      {error && <ErrorBanner>{error}</ErrorBanner>}
-      <ReptileForm value={state} onChange={setState} />
+      <ReptileForm value={state} onChange={setState} error={error} />
     </Modal>
   );
 }

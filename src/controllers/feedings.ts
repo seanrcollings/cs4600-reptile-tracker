@@ -26,7 +26,7 @@ const createFeeding: Endpoint = ({ client }) => [
     });
 
     if (!reptile) {
-      res.status(404).json({ error: "not found" });
+      res.status(404).json({ errors: "not found" });
       return;
     }
 
@@ -57,7 +57,7 @@ const updateFeeding: Endpoint = ({ client }) => [
     });
 
     if (!feeding) {
-      res.status(404).json({ error: "not found" });
+      res.status(404).json({ errors: "not found" });
       return;
     }
 
@@ -85,7 +85,7 @@ const deleteFeeding: Endpoint = ({ client }) => [
     });
 
     if (!feeding) {
-      res.status(404).json({ error: "not found" });
+      res.status(404).json({ errors: "not found" });
       return;
     }
 

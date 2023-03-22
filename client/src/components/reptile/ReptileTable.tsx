@@ -49,7 +49,7 @@ export default function ReptileTable() {
               <Table.Cell colSpan={4} style={{ height: "200px" }}>
                 <LoadingStatus
                   loading={loading}
-                  error={error}
+                  error={error?.toString()}
                   loadingMessage="Fetching Reptile Information..."
                 />
               </Table.Cell>

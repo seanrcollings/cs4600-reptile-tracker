@@ -43,7 +43,7 @@ const updateReptile: Endpoint = ({ client }) => [
     });
 
     if (!initialReptile) {
-      res.status(404).json({ error: "not found" });
+      res.status(404).json({ errors: "not found" });
       return;
     }
 
@@ -75,7 +75,7 @@ const deleteReptile: Endpoint = ({ client }) => [
     });
 
     if (!initialReptile) {
-      res.status(404).json({ error: "not found" });
+      res.status(404).json({ errors: "not found" });
       return;
     }
 

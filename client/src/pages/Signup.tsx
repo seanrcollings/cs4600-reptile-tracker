@@ -25,19 +25,29 @@ export default function Signup() {
 
   return (
     <div>
-      {error && <ErrorBanner>{error}</ErrorBanner>}
+      {/* {error && <ErrorBanner>{error}</ErrorBanner>} */}
       <form onSubmit={onSubmit}>
         <TextInput
           label="First Name"
           value={firstName}
           onChange={setFirstName}
+          error={error?.get("/firstName")}
+          required
         />
-        <TextInput label="Last Name" value={lastName} onChange={setLastName} />
+        <TextInput
+          label="Last Name"
+          value={lastName}
+          onChange={setLastName}
+          error={error?.get("/lastName")}
+          required
+        />
         <TextInput
           type="text"
           label="Email"
           value={email}
           onChange={setEmail}
+          error={error?.get("/email")}
+          required
         />
         <TextInput
           /* @ts-ignore */
@@ -45,6 +55,8 @@ export default function Signup() {
           label="Password"
           value={password}
           onChange={setPassword}
+          error={error?.get("/password")}
+          required
         />
         <Button type="submit" loading={loading}>
           Login
