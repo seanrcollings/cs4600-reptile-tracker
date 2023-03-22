@@ -7,14 +7,7 @@ import {
 import * as security from "../lib/security";
 import { body, Schemas } from "../lib/validate";
 import { controller } from "../lib/controller";
-
-function error(...messages: string[]) {
-  return {
-    errors: messages.map((m) => ({
-      message: m,
-    })),
-  };
-}
+import { error } from "../lib/utils";
 
 const login: Endpoint = ({ client }) => [
   body(Schemas.loginUser),
@@ -53,7 +46,7 @@ const createUser: Endpoint = ({ client }) => [
     const preexistingUser = await client.user.findFirst({ where: { email } });
 
     if (preexistingUser) {
-      res.status(400).json({ errors: "email in use" });
+      res.status(400).json(error("email in use"));
     }
 
     const user = await client.user.create({
@@ -76,6 +69,7 @@ const listUserSchedules: Endpoint =
   async (req, res) => {
     const schedules = await client.schedule.findMany({
       where: { userId: res.locals.user.id },
+      include: { reptile: true },
     });
 
     res.json({ schedules });

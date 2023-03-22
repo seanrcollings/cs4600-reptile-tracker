@@ -1,4 +1,5 @@
 import { controller } from "../lib/controller";
+import { error } from "../lib/utils";
 import { body, params, Schemas } from "../lib/validate";
 import { Endpoint } from "../types";
 
@@ -25,7 +26,7 @@ const createSchedule: Endpoint = ({ client }) => [
     });
 
     if (!reptile) {
-      res.send(404).json({ errors: "not found" });
+      res.send(404).json(error("not found"));
       return;
     }
 

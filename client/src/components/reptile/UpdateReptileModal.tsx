@@ -1,7 +1,7 @@
-import { Reptile } from "@prisma/client";
-import { Modal } from "atomic-elements";
 import { useState } from "react";
+import { Reptile } from "@prisma/client";
 import { ReptileCreation } from "../../../../src/types";
+import { Modal } from "atomic-elements";
 import { useUpdate } from "../../lib/api";
 import ReptileForm from "./ReptileForm";
 
@@ -35,7 +35,12 @@ export default function UpdateReptileModal({ reptile, open, onClose }: Props) {
       primaryButton="Save"
       primaryAction={onSubmit}
     >
-      <ReptileForm value={state} onChange={setState} error={error} />
+      <ReptileForm
+        value={state}
+        onChange={setState}
+        error={error}
+        onSubmit={onSubmit}
+      />
     </Modal>
   );
 }

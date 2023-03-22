@@ -11,13 +11,24 @@ const Form = styled.form`
 
 type Props = {
   value: ReptileCreation;
-  onChange: (value: ReptileCreation) => void;
   error: ApiError | null;
+  onChange: (value: ReptileCreation) => void;
+  onSubmit?: () => void;
 };
 
-export default function ReptileForm({ value, onChange, error }: Props) {
+export default function ReptileForm({
+  value,
+  onChange,
+  onSubmit,
+  error,
+}: Props) {
   return (
-    <Form>
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit && onSubmit();
+      }}
+    >
       <TextInput
         label="Name"
         value={value.name}

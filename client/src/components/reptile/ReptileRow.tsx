@@ -2,8 +2,13 @@ import { Reptile } from "@prisma/client";
 import { Table, IconButton, ConfirmationModal } from "atomic-elements";
 import { useBool } from "../../hooks";
 import { useDelete } from "../../lib/api";
+import styled from "styled-components";
 import UpdateReptileModal from "./UpdateReptileModal";
 import * as reptileUtil from "../../lib/reptile";
+
+const Spacer = styled.span`
+  margin-right: 10px;
+`;
 
 interface ReptileRowProps {
   reptile: Reptile;
@@ -47,11 +52,13 @@ export default function ReptileRow({ reptile, refetch }: ReptileRowProps) {
         <Table.Cell>{reptileUtil.speciesName(reptile.species)}</Table.Cell>
         <Table.Cell>{reptileUtil.sexName(reptile.sex)}</Table.Cell>
         <Table.Cell>
-          <IconButton
-            icon="edit"
-            ariaLabel="Edit Reptile"
-            onClick={toggleUpdate}
-          />
+          <Spacer>
+            <IconButton
+              icon="edit"
+              ariaLabel="Edit Reptile"
+              onClick={toggleUpdate}
+            />
+          </Spacer>
           <IconButton
             icon="delete"
             ariaLabel="Delete Reptile"

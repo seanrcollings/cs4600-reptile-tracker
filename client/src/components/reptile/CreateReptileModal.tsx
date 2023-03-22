@@ -39,7 +39,12 @@ export default function CreateReptileModal({ open, onClose }: Props) {
       primaryButton="Save"
       primaryAction={onSubmit}
     >
-      <ReptileForm value={reptile} onChange={setReptile} error={error} />
+      <ReptileForm
+        value={reptile}
+        onChange={setReptile}
+        error={error}
+        onSubmit={onSubmit}
+      />
     </Modal>
   );
 }

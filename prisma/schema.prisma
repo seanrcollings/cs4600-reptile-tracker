@@ -72,7 +72,7 @@ model Schedule {
   monday      Boolean  @default(false)
   tuesday     Boolean  @default(false)
   wednesday   Boolean  @default(false)
-  thrusday    Boolean  @default(false)
+  thursday    Boolean  @default(false)
   friday      Boolean  @default(false)
   saturday    Boolean  @default(false)
   sunday      Boolean  @default(false)
