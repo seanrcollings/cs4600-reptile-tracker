@@ -37,3 +37,23 @@ export function fmtDate(value: Date | string) {
     hour12: true,
   });
 }
+
+export function sentenceCase(str: string) {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
+export type DayName =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
+export function getTodaysName(): DayName {
+  const date = new Date();
+  return date
+    .toLocaleDateString("en-US", { weekday: "long" })
+    .toLowerCase() as DayName;
+}

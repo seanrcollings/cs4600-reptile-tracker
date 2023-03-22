@@ -44,7 +44,12 @@ export default function CreateFeedingModal({
       onOutsideClick={() => onClose(false)}
       centered
     >
-      <Form onSubmit={onSubmit}>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
         <TextInput
           label="Food Item"
           value={foodItem}

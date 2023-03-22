@@ -24,3 +24,9 @@ export const Form = styled.form`
     padding-bottom: 1.1em;
   }
 `;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

@@ -17,3 +17,8 @@ html a {
 w :focus:not(:focus-visible) {
   outline: none;
 }
+
+a {
+  font-size: 1.5rem;
+  text-decoration: none;
+}

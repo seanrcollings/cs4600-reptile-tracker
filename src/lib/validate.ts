@@ -115,7 +115,7 @@ export const Schemas = {
     type: "object",
     properties: {
       type: { type: "string", enum: ["feed", "record", "clean"] },
-      description: { type: "string" },
+      description: { type: "string", minLength: 1 },
       monday: { type: "boolean" },
       tuesday: { type: "boolean" },
       wednesday: { type: "boolean" },

@@ -1,47 +1,56 @@
 import { Reptile, Schedule } from "@prisma/client";
-import { LoadingStatus, Table } from "atomic-elements";
-import { useQuery } from "../../hooks";
+import { Button, LoadingStatus, MaterialIcon, Table } from "atomic-elements";
+import { useBool, useQuery } from "../../hooks";
+import { getTodaysName, sentenceCase } from "../../lib/utils";
+import { Header } from "../../styles";
+import CreateScheduleModal from "./CreateScheduleModal";
 
 interface QueryData {
   schedules: (Schedule & { reptile?: Reptile })[];
 }
 
-type DayName =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
-
 interface Props {
-  path: string;
-  includeName?: boolean;
+  reptileId?: number;
 }
 
-function getTodaysName(): DayName {
-  const date = new Date();
-  return date
-    .toLocaleDateString("en-US", { weekday: "long" })
-    .toLowerCase() as DayName;
-}
+export default function ScheduleTable({ reptileId }: Props) {
+  const [create, toggleCreate] = useBool(false);
 
-export default function ScheduleTable({ path, includeName = false }: Props) {
-  const { loading, error, data } = useQuery<QueryData>(path);
+  const path = reptileId
+    ? `/reptiles/${reptileId}/schedules` // Specific Reptile
+    : "/users/schedules "; // All Schedules for the user
+  const { loading, error, data, refetch } = useQuery<QueryData>(path);
 
   const today = getTodaysName();
   const schedules = !data ? [] : data.schedules.filter((s) => s[today]);
 
   return (
     <div>
-      <h2>Scheduled For Today</h2>
+      <Header>
+        <h2>Scheduled For Today</h2>
+        {reptileId && (
+          <Button onClick={toggleCreate}>
+            <MaterialIcon icon="add" />
+            Add Schedule
+          </Button>
+        )}
+      </Header>
+      {reptileId && (
+        <CreateScheduleModal
+          open={create}
+          reptileId={reptileId}
+          onClose={(created) => {
+            toggleCreate();
+            created && refetch();
+          }}
+        />
+      )}
       <Table title="Schedules Table">
         <Table.Head style={{ textAlign: "left" }}>
           <Table.Row>
             <Table.Header>Type</Table.Header>
             <Table.Header>Description</Table.Header>
-            {includeName && <Table.Header>Reptile</Table.Header>}
+            {!reptileId && <Table.Header>Reptile</Table.Header>}
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -58,9 +67,9 @@ export default function ScheduleTable({ path, includeName = false }: Props) {
           ) : (
             schedules.map((s) => (
               <Table.Row key={s.id}>
-                <Table.Cell>{s.type}</Table.Cell>
+                <Table.Cell>{sentenceCase(s.type)}</Table.Cell>
                 <Table.Cell>{s.description}</Table.Cell>
-                {includeName && (
+                {!reptileId && (
                   <Table.Cell>{s.reptile ? s.reptile.name : "-"}</Table.Cell>
                 )}
               </Table.Row>

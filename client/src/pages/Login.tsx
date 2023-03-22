@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, ErrorBanner, TextInput } from "atomic-elements";
+import styled from "styled-components";
 
 import { LoginRequest } from "../../../src/types";
 import { Link } from "react-router-dom";
 import { useAuth, useCreate } from "../hooks";
+import { ActionsContainer, Form, PageWrapper } from "../styles";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,9 +31,10 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <PageWrapper>
+      <h1>Login</h1>
       {error && <ErrorBanner>{error.toString()}</ErrorBanner>}
-      <form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <TextInput label="Email" value={email} onChange={setEmail} required />
         <TextInput
           /* @ts-ignore */
@@ -41,11 +44,13 @@ export default function Login() {
           onChange={setPassword}
           required
         />
-        <Button type="submit" loading={loading}>
-          Login
-        </Button>
-      </form>
-      <Link to="/signup">Sign Up</Link>
-    </div>
+        <ActionsContainer>
+          <Link to="/signup">Sign Up</Link>
+          <Button type="submit" loading={loading}>
+            Login
+          </Button>
+        </ActionsContainer>
+      </Form>
+    </PageWrapper>
   );
 }

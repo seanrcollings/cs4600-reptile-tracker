@@ -61,7 +61,7 @@ export default function Reptile() {
         </InfoList>
       </div>
       <Card>
-        <ScheduleTable path={`/reptiles/${data.reptile.id}/schedules`} />
+        <ScheduleTable reptileId={data.reptile.id} />
       </Card>
       <br />
       <Card>

@@ -1,8 +1,10 @@
-import { Button, ErrorBanner, TextInput } from "atomic-elements";
+import { Button, TextInput } from "atomic-elements";
 import { useState } from "react";
 import { CreateUserRequest } from "../../../src/types";
 import { useNavigate } from "react-router";
 import { useCreate } from "../hooks";
+import { ActionsContainer, Form, PageWrapper } from "../styles";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [signUp, { loading, error, data }] = useCreate<CreateUserRequest, any>(
+  const [signUp, { loading, error }] = useCreate<CreateUserRequest, any>(
     "/users"
   );
 
@@ -24,9 +26,9 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      {/* {error && <ErrorBanner>{error}</ErrorBanner>} */}
-      <form onSubmit={onSubmit}>
+    <PageWrapper>
+      <h1>Sign Up</h1>
+      <Form onSubmit={onSubmit}>
         <TextInput
           label="First Name"
           value={firstName}
@@ -58,10 +60,13 @@ export default function Signup() {
           error={error?.get("/password")}
           required
         />
-        <Button type="submit" loading={loading}>
-          Login
-        </Button>
-      </form>
-    </div>
+        <ActionsContainer>
+          <Link to="/login">Login</Link>
+          <Button type="submit" loading={loading}>
+            Login
+          </Button>
+        </ActionsContainer>
+      </Form>
+    </PageWrapper>
   );
 }
