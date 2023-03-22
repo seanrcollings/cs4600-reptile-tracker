@@ -2,33 +2,22 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import ReptileTable from "../components/reptile/ReptileTable";
 import ScheduleTable from "../components/schedule/ScheduleTable";
-
-const DashboardWrapper = styled.div`
-  margin: auto;
-  width: 1000px;
-`;
-
-const Card = styled.div`
-  border: 1px solid lightgrey;
-  border-radius: 10px;
-  padding: 10px;
-  height: 400px;
-  overflow-y: auto;
-`;
+import { useApi } from "../hooks";
+import { Card, PageWrapper } from "../styles";
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   return (
-    <DashboardWrapper>
+    <PageWrapper>
       <h1>Dashboard</h1>
       <Card>
-        <ScheduleTable />
+        <ScheduleTable path="/users/schedules" includeName />
       </Card>
       <br />
       <Card>
         <ReptileTable />
       </Card>
-    </DashboardWrapper>
+    </PageWrapper>
   );
 }

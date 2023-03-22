@@ -24,3 +24,16 @@ export function sexName(sex: string) {
       return "Unkown";
   }
 }
+
+export function fmtDate(value: Date | string) {
+  const date = new Date(value);
+  return date.toLocaleDateString("en-us", {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}

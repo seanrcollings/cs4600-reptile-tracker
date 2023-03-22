@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useApi } from "../hooks";
 import { ReptileApi } from "../lib/api";
 
 export default function Home() {
   const navigate = useNavigate();
+  const api = useApi();
 
   useEffect(() => {
-    if (!ReptileApi.token) return;
+    if (!api.token) return;
     navigate("/dashboard", { replace: true });
   }, []);
 

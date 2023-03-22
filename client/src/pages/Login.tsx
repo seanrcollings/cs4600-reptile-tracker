@@ -3,12 +3,14 @@ import { useNavigate } from "react-router";
 import { Button, ErrorBanner, TextInput } from "atomic-elements";
 
 import { LoginRequest } from "../../../src/types";
-import { useCreate, ReptileApi } from "../lib/api";
 import { Link } from "react-router-dom";
+import { useAuth, useCreate } from "../hooks";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const authorize = useAuth();
 
   const [login, { loading, error }] = useCreate<
     LoginRequest,
@@ -20,8 +22,9 @@ export default function Login() {
   const onSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     login({ email, password }).then(({ token }) => {
-      ReptileApi.token = token;
-      navigate("/dashboard", { replace: true });
+      authorize(token);
+      // Timing issue
+      setTimeout(() => navigate("/dashboard", { replace: true }), 0);
     });
   };
 

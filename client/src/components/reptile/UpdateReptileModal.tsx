@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Reptile } from "@prisma/client";
 import { ReptileCreation } from "../../../../src/types";
 import { Modal } from "atomic-elements";
-import { useUpdate } from "../../lib/api";
 import ReptileForm from "./ReptileForm";
+import { useUpdate } from "../../hooks";
 
 interface Props {
   reptile: Reptile;
   open: boolean;
-  onClose: (created: boolean) => void;
+  onClose: (updated: boolean) => void;
 }
 
 export default function UpdateReptileModal({ reptile, open, onClose }: Props) {
@@ -29,11 +29,12 @@ export default function UpdateReptileModal({ reptile, open, onClose }: Props) {
   return (
     <Modal
       open={open}
-      title={`Update ${reptile.name}`}
+      title={`Edit ${reptile.name}`}
       onClose={() => onClose(false)}
       secondaryAction={() => onClose(false)}
       primaryButton="Save"
       primaryAction={onSubmit}
+      centered
     >
       <ReptileForm
         value={state}

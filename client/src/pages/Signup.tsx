@@ -1,8 +1,8 @@
 import { Button, ErrorBanner, TextInput } from "atomic-elements";
 import { useState } from "react";
-import { useCreate } from "../lib/api";
 import { CreateUserRequest } from "../../../src/types";
 import { useNavigate } from "react-router";
+import { useCreate } from "../hooks";
 
 export default function Signup() {
   const [email, setEmail] = useState("");

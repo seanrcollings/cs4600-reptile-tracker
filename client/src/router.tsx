@@ -3,11 +3,12 @@ import AuthLayout from "./AuthLayout";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Reptile from "./pages/Reptile";
 import Signup from "./pages/Signup";
 
 export const router = createBrowserRouter([
   {
-    index: true,
+    path: "/",
     element: <Home />,
   },
   {
@@ -19,12 +20,15 @@ export const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/dashboard",
     element: <AuthLayout />,
     children: [
       {
-        index: true,
+        path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/reptile/:id",
+        element: <Reptile />,
       },
     ],
   },

@@ -9,6 +9,7 @@ const getFeedings: Endpoint = ({ client }) => [
 
     const feedings = await client.feeding.findMany({
       where: { reptileId: reptileId, reptile: { userId: res.locals.user.id } },
+      orderBy: { creatdAt: "desc" },
     });
 
     res.json({ feedings });

@@ -2,6 +2,17 @@ import { Endpoint, ReptileCreation, ReptileUpdate } from "../types";
 import { body, params, Schemas } from "../lib/validate";
 import { controller } from "../lib/controller";
 
+const getReptile: Endpoint = ({ client }) => [
+  params(Schemas.idParam),
+  async (req, res) => {
+    const id = parseInt(req.params.id);
+    const reptile = await client.reptile.findFirst({
+      where: { userId: res.locals.user.id, id },
+    });
+    res.json({ reptile });
+  },
+];
+
 const getReptiles: Endpoint =
   ({ client }) =>
   async (req, res) => {
@@ -97,6 +108,11 @@ export const reptilesController = controller("reptiles", [
     path: "",
     method: "post",
     endpoint: createReptile,
+  },
+  {
+    path: "/:id",
+    method: "get",
+    endpoint: getReptile,
   },
   {
     path: "/:id",

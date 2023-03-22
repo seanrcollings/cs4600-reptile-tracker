@@ -1,10 +1,10 @@
 import { Reptile } from "@prisma/client";
 import { Table, IconButton, ConfirmationModal } from "atomic-elements";
-import { useBool } from "../../hooks";
-import { useDelete } from "../../lib/api";
+import { useBool, useDelete } from "../../hooks";
 import styled from "styled-components";
 import UpdateReptileModal from "./UpdateReptileModal";
-import * as reptileUtil from "../../lib/reptile";
+import * as util from "../../lib/utils";
+import { Link } from "react-router-dom";
 
 const Spacer = styled.span`
   margin-right: 10px;
@@ -48,9 +48,11 @@ export default function ReptileRow({ reptile, refetch }: ReptileRowProps) {
         </p>
       </ConfirmationModal>
       <Table.Row>
-        <Table.Cell>{reptile.name ? reptile.name : "-"}</Table.Cell>
-        <Table.Cell>{reptileUtil.speciesName(reptile.species)}</Table.Cell>
-        <Table.Cell>{reptileUtil.sexName(reptile.sex)}</Table.Cell>
+        <Table.Cell>
+          <Link to={`/reptile/${reptile.id}`}>{reptile.name}</Link>
+        </Table.Cell>
+        <Table.Cell>{util.speciesName(reptile.species)}</Table.Cell>
+        <Table.Cell>{util.sexName(reptile.sex)}</Table.Cell>
         <Table.Cell>
           <Spacer>
             <IconButton

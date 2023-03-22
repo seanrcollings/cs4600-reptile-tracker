@@ -1,15 +1,10 @@
 import { Reptile } from "@prisma/client";
 import { Table, LoadingStatus, Button, MaterialIcon } from "atomic-elements";
 import { useState } from "react";
-import styled from "styled-components";
-import { useQuery } from "../../lib/api";
+import { useQuery } from "../../hooks";
+import { Header } from "../../styles";
 import CreateReptileModal from "./CreateReptileModal";
 import ReptileRow from "./ReptileRow";
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
 
 export default function ReptileTable() {
   const [openCreate, setOpenCreate] = useState(false);

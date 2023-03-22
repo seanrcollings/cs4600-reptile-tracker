@@ -95,7 +95,7 @@ export const Schemas = {
   feeding: {
     type: "object",
     properties: {
-      foodItem: { type: "string" },
+      foodItem: { type: "string", minLength: 1 },
     },
     required: ["foodItem"],
     additionalProperties: false,

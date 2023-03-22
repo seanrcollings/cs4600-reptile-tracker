@@ -9,6 +9,7 @@ const getHusbandryRecords: Endpoint = ({ client }) => [
 
     const husbandryRecords = await client.husbandryRecord.findMany({
       where: { reptileId: reptileId, reptile: { userId: res.locals.user.id } },
+      orderBy: { creatdAt: "desc" },
     });
 
     res.json({ husbandryRecords });

@@ -1,13 +1,7 @@
 import { Option, Select, TextInput } from "atomic-elements";
-import styled from "styled-components";
 import { ReptileCreation } from "../../../../src/types";
 import { ApiError } from "../../lib/api";
-
-const Form = styled.form`
-  & .aje-input {
-    padding-bottom: 1.1em;
-  }
-`;
+import { Form } from "../../styles";
 
 type Props = {
   value: ReptileCreation;

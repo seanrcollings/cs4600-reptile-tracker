@@ -1,19 +1,21 @@
 import { Button } from "atomic-elements";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { ReptileApi } from "./lib/api";
+import { useApi, useAuth } from "./hooks";
 
 export default function AuthLayout() {
   const navigate = useNavigate();
+  const api = useApi();
+  const auth = useAuth();
 
   useEffect(() => {
-    if (!ReptileApi.token) {
+    if (!api.token) {
       navigate("/login", { replace: true });
     }
   }, []);
 
   const logout = () => {
-    ReptileApi.logout();
+    auth(null);
     navigate("/login");
   };
 

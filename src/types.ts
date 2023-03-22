@@ -35,7 +35,7 @@ export interface FeedingCreation {
 export interface HusbandryRecordCreation {
   length: number;
   weight: number;
-  temperatyure: number;
+  temperature: number;
   humidity: number;
 }
 

@@ -2,7 +2,7 @@ import { Reptile } from "@prisma/client";
 import { Modal } from "atomic-elements";
 import { useState } from "react";
 import { ReptileCreation } from "../../../../src/types";
-import { useCreate } from "../../lib/api";
+import { useCreate } from "../../hooks";
 import ReptileForm from "./ReptileForm";
 
 interface Props {
@@ -38,6 +38,7 @@ export default function CreateReptileModal({ open, onClose }: Props) {
       secondaryAction={() => onClose(false)}
       primaryButton="Save"
       primaryAction={onSubmit}
+      centered
     >
       <ReptileForm
         value={reptile}
