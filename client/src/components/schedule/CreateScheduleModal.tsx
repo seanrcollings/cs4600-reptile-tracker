@@ -1,4 +1,11 @@
-import { CheckBox, Modal, Option, Select, Textarea } from "atomic-elements";
+import {
+  CheckBox,
+  Label,
+  Modal,
+  Option,
+  Select,
+  Textarea,
+} from "atomic-elements";
 import { useState } from "react";
 import { ScheduleCreation } from "../../../../src/types";
 import { useCreate } from "../../hooks";
@@ -88,9 +95,9 @@ export default function CreateScheduleModal({
           required
         />
 
-        <p>
-          <strong>Scheduled Days</strong>
-        </p>
+        <Label error={error?.get("/days")} htmlFor="">
+          Scheduled Days
+        </Label>
 
         {days.map((day) => (
           <CheckBox

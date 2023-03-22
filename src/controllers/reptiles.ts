@@ -1,6 +1,7 @@
 import { Endpoint, ReptileCreation, ReptileUpdate } from "../types";
 import { body, params, Schemas } from "../lib/validate";
 import { controller } from "../lib/controller";
+import { error } from "../lib/utils";
 
 const getReptile: Endpoint = ({ client }) => [
   params(Schemas.idParam),
@@ -9,6 +10,12 @@ const getReptile: Endpoint = ({ client }) => [
     const reptile = await client.reptile.findFirst({
       where: { userId: res.locals.user.id, id },
     });
+
+    if (!reptile) {
+      res.status(404).json(error("Not found"));
+      return;
+    }
+
     res.json({ reptile });
   },
 ];
@@ -54,7 +61,7 @@ const updateReptile: Endpoint = ({ client }) => [
     });
 
     if (!initialReptile) {
-      res.status(404).json({ errors: "not found" });
+      res.status(404).json({ errors: "Not found" });
       return;
     }
 

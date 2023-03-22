@@ -30,6 +30,19 @@ const createSchedule: Endpoint = ({ client }) => [
       return;
     }
 
+    if (
+      Object.entries(req.body).filter(([key, value]) => value === true)
+        .length == 0
+    ) {
+      res.status(400).json(
+        error({
+          instancePath: "/days",
+          message: "needs to be scheduled for at least one day",
+        })
+      );
+      return;
+    }
+
     const schedule = await client.schedule.create({
       data: {
         reptileId: reptileId,

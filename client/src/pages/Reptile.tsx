@@ -23,13 +23,17 @@ export default function Reptile() {
     `/reptiles/${id}`
   );
 
+  console.log(error);
+
   if (error || loading) {
     return (
-      <LoadingStatus
-        loading={true}
-        error={error?.toString()}
-        loadingMessage="Fetching Reptile information..."
-      />
+      <PageWrapper>
+        <LoadingStatus
+          loading={true}
+          error={error?.toString()}
+          loadingMessage="Fetching Reptile information..."
+        />
+      </PageWrapper>
     );
   }
 
