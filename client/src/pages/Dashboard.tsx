@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import ReptileTable from "../components/reptile/ReptileTable";
-import { ReptileApi } from "../lib/api";
 
 const DashboardWrapper = styled.div`
   margin: auto;
@@ -19,12 +17,6 @@ const Card = styled.div`
 
 export default function Dashboard() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!ReptileApi.initAuth()) {
-      navigate("/login", { replace: true });
-    }
-  }, []);
 
   return (
     <DashboardWrapper>

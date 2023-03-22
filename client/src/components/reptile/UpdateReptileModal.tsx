@@ -1,5 +1,5 @@
 import { Reptile } from "@prisma/client";
-import { ErrorBanner, Modal } from "atomic-elements";
+import { Modal } from "atomic-elements";
 import { useState } from "react";
 import { ReptileCreation } from "../../../../src/types";
 import { useUpdate } from "../../lib/api";

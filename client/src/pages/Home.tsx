@@ -7,7 +7,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!ReptileApi.initAuth()) return;
+    if (!ReptileApi.token) return;
     navigate("/dashboard", { replace: true });
   }, []);
 

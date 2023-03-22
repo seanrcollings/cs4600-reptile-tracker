@@ -63,8 +63,12 @@ export class ReptileApi {
 
     if (!res.ok) {
       if (res.status == 401) {
-        localStorage.removeItem("token");
+        // Quick and dirty way to log the user out and send them to
+        // the login page when their token expires
+        this.logout();
+        window.location.href = `${window.location.origin}/login`;
       }
+
       throw new ApiError(`${method} ${path}: ${res.status}`, await res.json());
     }
 
@@ -96,6 +100,10 @@ export class ReptileApi {
 
     this._token = token;
     return true;
+  }
+
+  static logout() {
+    localStorage.removeItem("token");
   }
 }
 

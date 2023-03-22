@@ -2,19 +2,12 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import { UserJwtPayload } from "../../types";
 import { decodeToken } from "../security";
 
-const UNPROTECED_PATHS = ["/users", "/users/login"];
-
 export async function verifyToken(
   req: Request,
   res: Response,
   next: NextFunction,
   callback: () => string | null
 ) {
-  // if (UNPROTECED_PATHS.includes(req.path)) {
-  //   next();
-  //   return;
-  // }
-
   const token = callback();
 
   if (!token) {
